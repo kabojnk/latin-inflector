@@ -1,12 +1,12 @@
 {
-    "principle_parts": {
-        "present_indicative": "ō",
-        "present_infinitive": "āre",
-        "perfect_indicative": "āvī",
-        "perfect_passive_participle": "ātus"
-    },
     "voices": {
         "active": {
+            "principle_parts": {
+                "present_indicative": "ō",
+                "present_infinitive": "āre",
+                "perfect_indicative": "āvī",
+                "perfect_passive_participle": "ātus"
+            },
             "moods": {
                 "indicative": {
                     "present": {
