@@ -1,0 +1,175 @@
+{
+    "principle_parts": {
+        "present_indicative": "ō",
+        "present_infinitive": "āre",
+        "perfect_indicative": "āvī",
+        "perfect_passive_participle": "ātus"
+    },
+    "voices": {
+        "active": {
+            "moods": {
+                "indicative": {
+                    "present": {
+                        "sg": ["ō", "ās", "at"],
+                        "pl": ["āmus", "ātis", "ant"]
+                    },
+                    "imperfect": {
+                        "sg": ["ābam", "ābās", "ābat"],
+                        "pl": ["ābāmus", "ābātis", "ābant"]
+                    },
+                    "future": {
+                        "sg": ["ābō", "ābis", "ābit"],
+                        "pl": ["ābimus", "ābitis", "ābunt"]
+                    },
+                    "perfect": {
+                        "sg": ["ī", "istī", "it"],
+                        "pl": ["imus", "istis", "ērunt"]
+                    },
+                    "pluperfect": {
+                        "sg": ["eram", "erās", "erat"],
+                        "pl": ["erāmus", "erātis", "erant"]
+                    },
+                    "future_perfect": {
+                        "sg": ["erō", "eris", "erit"],
+                        "pl": ["erimus", "eritis", "erint"]
+                    }
+                },
+                "subjunctive": {
+                    "present": {
+                        "sg": ["em", "ēs", "et"],
+                        "pl": ["ēmus", "ētis", "ent"]
+                    },
+                    "imperfect": {
+                        "sg": ["ārem", "ārēs", "āret"],
+                        "pl": ["ārēmus", "ārēis", "ārent"]
+                    },
+                    "perfect": {
+                        "sg": ["ī", "istī", "it"],
+                        "pl": ["imus", "istis", "ērunt"]
+                    },
+                    "pluperfect": {
+                        "sg": ["issem", "issēs", "isset"],
+                        "pl": ["īssēmus", "issētis", "issent"]
+                    }
+                },
+                "imperative": {
+                    "present": {
+                        "second": {
+                            "sg": "ā",
+                            "pl": "āte"
+                        }
+                    },
+                    "future": {
+                        "second": {
+                            "sg": "ātō",
+                            "pl": "ātōte"
+                        },
+                        "third": {
+                            "sg": "ātō",
+                            "pl": "antō"
+                        }
+                    }
+                }
+            },
+            "infinitive": {
+                "present": "āre",
+                "perfect": "isse",
+                "future": "ūrus esse"
+            },
+            "participle": {
+                "present": "āns",
+                "future": "ūrus"
+            },
+            "gerund": {
+                "gen": "andī",
+                "dat": "andō",
+                "acc": "andum",
+                "abl": "andō"
+            },
+            "supine": {
+                "acc": "um",
+                "abl": "ū"
+            }
+        },
+        "passive": {
+            "principle_parts": {
+                "present_indicative": "ōr",
+                "present_infinitive": "āri",
+                "perfect_indicative": "ātus sum"
+            },
+            "moods": {
+                "indicative": {
+                    "present": {
+                        "sg": ["or", "āris", "ātur"],
+                        "pl": ["āmur", "āminī", "antur"]
+                    },
+                    "imperfect": {
+                        "sg": ["ābar", "ābāris", "ābatur"],
+                        "pl": ["ābāmur", "ābāmini", "ābantur"]
+                    },
+                    "future": {
+                        "sg": ["ābor", "āberis", "ābitur"],
+                        "pl": ["ābimur", "ābiminī", "ābuntur"]
+                    },
+                    "perfect": {
+                        "sg": ["{us|a|um} sum", "us es", "us est"],
+                        "pl": ["{ī|ae|a) sumus", "ī estis", "ī sunt"]
+                    },
+                    "pluperfect": {
+                        "sg": ["{us|a|um} eram", "us erās", "us erat"],
+                        "pl": ["{ī|ae|a} erāmus", "ī erātis", "ī erant"]
+                    },
+                    "future_perfect": {
+                        "sg": ["{us|a|um} erō", "us eris", "us erit"],
+                        "pl": ["{us|a|um} erimus", "us eritis", "us erunt"]
+                    }
+                },
+                "subjunctive": {
+                    "present": {
+                        "sg": ["er", "ēris", "ētur"],
+                        "pl": ["ēmur", "ēmini", "entur"]
+                    },
+                    "imperfect": {
+                        "sg": ["ārerer", "ārēris", "ārētur"],
+                        "pl": ["ārēmur", "ārēminī", "ārentur"]
+                    },
+                    "perfect": {
+                        "sg": ["{us|a|um} sim", "us sīs", "us sit"],
+                        "pl": ["{ī|ae|a} sīmus", "ī sītis", "ī sint"]
+                    },
+                    "pluperfect": {
+                        "sg": ["{us|a|um} essem", "us essēs", "us esset"],
+                        "pl": ["{ī|ae|a} essēmus", "ī essētis", "ī essent"]
+                    }
+                },
+                "imperative": {
+                    "present": {
+                        "second": {
+                            "sg": "āre",
+                            "pl": "āminī"
+                        }
+                    },
+                    "future": {
+                        "second": {
+                            "sg": "ātor",
+                            "pl": "{{none}}"
+                        },
+                        "third": {
+                            "sg": "ātor",
+                            "pl": "antor"
+                        }
+                    }
+                },
+                "infinitive": {
+                    "present": "ārī",
+                    "perfect": "ātus esse",
+                    "future": "um īrī"
+                },
+                "participle": {
+                    "present": "us",
+                    "future": "andus"
+                }
+            }
+        }
+    }
+}
