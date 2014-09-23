@@ -54,17 +54,20 @@
                 },
                 "imperative": {
                     "present": {
-                        "second": {
+                        "1": [],
+                        "2": {
                             "sg": "ā",
                             "pl": "āte"
-                        }
+                        },
+                        "3": []
                     },
                     "future": {
-                        "second": {
+                        "1": [],
+                        "2": {
                             "sg": "ātō",
                             "pl": "ātōte"
                         },
-                        "third": {
+                        "3": {
                             "sg": "ātō",
                             "pl": "antō"
                         }

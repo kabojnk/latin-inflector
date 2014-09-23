@@ -21,6 +21,8 @@ var argv = require('optimist')
 var util = require('util');
 var jsonfile = require('jsonfile');
 
+var inflections = {};
+
 // =====================================================================================================================
 // PRINCIPLE PARTS
 // =====================================================================================================================
@@ -50,12 +52,62 @@ var conjugator = {
     }
 };
 
-var inf_stem = principleParts[1];
-var perf_stem = principleParts[2];
-var perf_pass_part_stem = principleParts[3];
-
-console.dir(conjugator);
+// =====================================================================================================================
+// PROCESS ACTIVE VOICE
+// =====================================================================================================================
 
 
+var infStemRegex = new RegExp(conjugator.endings.active.present_infinitive + '$');
+var perfStemRegex = new RegExp(conjugator.endings.active.perfect_indicative + '$');
+var perfPassPartStemRegex = new RegExp(conjugator.endings.active.perfect_passive_participle + '$');
+
+var inf_stem = principleParts[1].replace(infStemRegex, '');
+var perf_stem = principleParts[2].replace(perfStemRegex, '');
+var perf_pass_part_stem = principleParts[3].replace(perfPassPartStemRegex, '');
 
 
+for (var m in conjugation.voices.active.moods) {
+    inflections[m] = {};
+    var mood = conjugation.voices.active.moods[m];
+    switch(m) {
+        default:
+            break;
+        case 'subjunctive':
+        case 'indicative':
+            for (var t in mood) {
+                if (mood.hasOwnProperty(t)) {
+                    inflections[m][t] = { 'sg' : {}, 'pl': {}};
+                    var tense = mood[t];
+                    if (tense.hasOwnProperty('sg')) {
+                        for (var i = 0; i < tense.sg.length; i++) {
+                            inflections[m][t].sg[i] = inf_stem + tense.sg[i];
+                        }
+                    }
+                    if (tense.hasOwnProperty('pl')) {
+                        for (var i = 0; i < tense.pl.length; i++) {
+                            inflections[m][t].pl[i] = inf_stem + tense.pl[i]
+                        }
+                    }
+                }
+            }
+            break;
+        case 'imperative':
+            for (var t in mood) {
+                var tense = mood[t];
+                for (var n in tense) {
+                    inflections[m][t] = {'1': {}, '2': {}, '3': {}};
+                    var number = tense[n];
+                    if (number.hasOwnProperty('sg')) {
+                        inflections[m][t][n].sg = inf_stem + number.sg;
+                    }
+                    if (number.hasOwnProperty('pl')) {
+                        inflections[m][t][n].pl = inf_stem + number.pl;
+                    }
+                }
+            }
+            break;
+
+    }
+}
+
+console.log(util.inspect(inflections, {depth: 8}));
