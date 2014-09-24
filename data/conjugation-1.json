@@ -54,15 +54,15 @@
                 },
                 "imperative": {
                     "present": {
-                        "1": [],
+                        "1": {},
                         "2": {
                             "sg": "ā",
                             "pl": "āte"
                         },
-                        "3": []
+                        "3": {}
                     },
                     "future": {
-                        "1": [],
+                        "1": {},
                         "2": {
                             "sg": "ātō",
                             "pl": "ātōte"
@@ -162,16 +162,16 @@
                             "pl": "antor"
                         }
                     }
-                },
-                "infinitive": {
-                    "present": "ārī",
-                    "perfect": "ātus esse",
-                    "future": "um īrī"
-                },
-                "participle": {
-                    "present": "us",
-                    "future": "andus"
                 }
+            },
+            "infinitive": {
+                "present": "ārī",
+                "perfect": "ātus esse",
+                "future": "um īrī"
+            },
+            "participle": {
+                "present": "us",
+                "future": "andus"
             }
         }
     }

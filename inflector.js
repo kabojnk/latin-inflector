@@ -53,7 +53,7 @@ var conjugator = {
 };
 
 // =====================================================================================================================
-// PROCESS ACTIVE VOICE
+// PROCESS VERB
 // =====================================================================================================================
 
 
@@ -65,49 +65,99 @@ var inf_stem = principleParts[1].replace(infStemRegex, '');
 var perf_stem = principleParts[2].replace(perfStemRegex, '');
 var perf_pass_part_stem = principleParts[3].replace(perfPassPartStemRegex, '');
 
+for (var v in conjugation.voices) {
+    inflections[v] = {};
+    voice = conjugation.voices[v];
 
-for (var m in conjugation.voices.active.moods) {
-    inflections[m] = {};
-    var mood = conjugation.voices.active.moods[m];
-    switch(m) {
-        default:
-            break;
-        case 'subjunctive':
-        case 'indicative':
-            for (var t in mood) {
-                if (mood.hasOwnProperty(t)) {
-                    inflections[m][t] = { 'sg' : {}, 'pl': {}};
+    //
+    // Process Moods
+    // ------------------------------------------------------
+    for (var m in voice.moods) {
+        inflections[v][m] = {};
+        var mood = voice.moods[m];
+        switch(m) {
+            default:
+                break;
+            case 'subjunctive':
+            case 'indicative':
+                for (var t in mood) {
+                    if (mood.hasOwnProperty(t)) {
+                        inflections[v][m][t] = { 'sg' : {}, 'pl': {}};
+                        var tense = mood[t];
+                        if (tense.hasOwnProperty('sg')) {
+                            for (var i = 0; i < tense.sg.length; i++) {
+                                inflections[v][m][t].sg[i] = inf_stem + tense.sg[i];
+                            }
+                        }
+                        if (tense.hasOwnProperty('pl')) {
+                            for (var i = 0; i < tense.pl.length; i++) {
+                                inflections[v][m][t].pl[i] = inf_stem + tense.pl[i]
+                            }
+                        }
+                    }
+                }
+                break;
+            case 'imperative':
+                for (var t in mood) {
                     var tense = mood[t];
-                    if (tense.hasOwnProperty('sg')) {
-                        for (var i = 0; i < tense.sg.length; i++) {
-                            inflections[m][t].sg[i] = inf_stem + tense.sg[i];
+                    inflections[v][m][t] = {};
+                    for (var n in tense) {
+                        console.log(n);
+                        inflections[v][m][t][n] = {};
+                        var number = tense[n];
+                        if (number.hasOwnProperty('sg')) {
+                            inflections[v][m][t][n].sg = inf_stem + number.sg;
                         }
-                    }
-                    if (tense.hasOwnProperty('pl')) {
-                        for (var i = 0; i < tense.pl.length; i++) {
-                            inflections[m][t].pl[i] = inf_stem + tense.pl[i]
+                        if (number.hasOwnProperty('pl')) {
+                            inflections[v][m][t][n].pl = inf_stem + number.pl;
                         }
                     }
                 }
-            }
-            break;
-        case 'imperative':
-            for (var t in mood) {
-                var tense = mood[t];
-                for (var n in tense) {
-                    inflections[m][t] = {'1': {}, '2': {}, '3': {}};
-                    var number = tense[n];
-                    if (number.hasOwnProperty('sg')) {
-                        inflections[m][t][n].sg = inf_stem + number.sg;
-                    }
-                    if (number.hasOwnProperty('pl')) {
-                        inflections[m][t][n].pl = inf_stem + number.pl;
-                    }
-                }
-            }
-            break;
+                break;
 
+        }
+    }
+
+    //
+    // Process Infinitives
+    // ------------------------------------------------------
+    if (voice.hasOwnProperty('infinitive')) {
+        inflections[v].infinitive = {};
+        for (var t in voice.infinitive) {
+            inflections[v].infinitive[t] = inf_stem + voice.infinitive[t];
+        }
+    }
+
+    //
+    // Process Participles
+    // ------------------------------------------------------
+    if (voice.hasOwnProperty('participle')) {
+        inflections[v].participle = {};
+        for (var t in voice.participle) {
+            inflections[v].participle[t] = inf_stem + voice.participle[t];
+        }
+    }
+
+    //
+    // Process Gerunds
+    // ------------------------------------------------------
+    if (voice.hasOwnProperty('gerund')) {
+        inflections[v].gerund = {};
+        for (var c in voice.gerund) {
+            inflections[v].gerund[c] = inf_stem + voice.gerund[c];
+        }
+    }
+
+    //
+    // Process Supines
+    // ------------------------------------------------------
+    if (voice.hasOwnProperty('supine')) {
+        inflections[v].supine = {};
+        for (var c in voice.supine) {
+            inflections[v].supine[c] = inf_stem + voice.supine[c];
+        }
     }
 }
+
 
 console.log(util.inspect(inflections, {depth: 8}));
