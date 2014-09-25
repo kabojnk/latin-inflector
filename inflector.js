@@ -1,21 +1,30 @@
 #!/usr/bin/env node
 
+
+
 var usage = [
-    'Usage: ./inflector -verb \"<principle, parts>\" -conjugation <num> [-output-config <html_config.json>]',
+    'Usage: ./inflector --verb \"<principle, parts>\" --conjugation <num> [--deponent] [--processor <file.json>] [--out <outfile>]',
     '',
-    'Example: ./inflector -verb \"amo, amare, amavi, amatus\" -conjugation 1 -deponent n -output-config html_config.json',
+    'Example: ./inflector --verb \"amo, amare, amavi, amatus\" --conjugation 1 --processor html_output.json --out outfile.html',
     '',
-    '-verb "<verb principle parts>"',
-    '-conjugation <num>',
-    '-deponent <y|n>',
-    '-html-output-config <configfile.json>'
+    '--verb "<verb principle parts>"',
+    '--conjugation <num>',
+    '--deponent',
+    '--processor <processor.json>',
+    '--out <outfile>',
+    ''
 ].join("\n");
 
 var argv = require('optimist')
     .usage(usage)
     .demand(['verb', 'conjugation'])
-    .default('deponent', 'n')
+    .boolean('deponent')
     .default('output-config', '')
+    .default('out', null)
+    .default('processor', null)
+    .describe('deponent', 'If specified, conjugates the verb as deponent')
+    .describe('processor', 'A JSON file that contains a function that takes one argument (an object containing all of the inflections')
+    .describe('out', 'If specified, write output to a file. If `-processor` is not specified, writes output as JSON')
     .argv;
 
 var util = require('util');
@@ -32,13 +41,13 @@ var principleParts = argv.verb.split(',');
 for (var i = 0; i < principleParts.length; i++) {
     principleParts[i] = principleParts[i].trim();
 }
-console.log(principleParts);
+//console.log(principleParts);
 
 // =====================================================================================================================
 // LOAD CONJUGATION INFO
 // =====================================================================================================================
 var conjugation = jsonfile.readFileSync('./data/conjugation-'+argv.conjugation+'.json');
-console.log(conjugation);
+//console.log(conjugation);
 
 var conjugator = {
     endings: {
@@ -76,8 +85,6 @@ for (var v in conjugation.voices) {
         inflections[v][m] = {};
         var mood = voice.moods[m];
         switch(m) {
-            default:
-                break;
             case 'subjunctive':
             case 'indicative':
                 for (var t in mood) {
@@ -114,7 +121,8 @@ for (var v in conjugation.voices) {
                     }
                 }
                 break;
-
+            default:
+                break;
         }
     }
 
@@ -159,5 +167,13 @@ for (var v in conjugation.voices) {
     }
 }
 
+
+// Swap voices if deponent
+if (argv.deponent) {
+    inflections.temp = inflections.passive;
+    inflections.passive = inflections.active;
+    inflections.active = inflections.temp;
+    delete inflections.temp;
+}
 
 console.log(util.inspect(inflections, {depth: 8}));
