@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
-
+var util = require('util');
+var jsonfile = require('jsonfile');
 
 var usage = [
-    'Usage: ./inflector --verb \"<principle, parts>\" --conjugation <num> [--deponent] [--processor <file.json>] [--out <outfile>]',
+    'Usage: ./inflector --verb \"<principal, parts>\" --conjugation <num> [--deponent] [--translation <values>] [--processor <file.js>] [--out <outfile>]',
     '',
-    'Example: ./inflector --verb \"amo, amare, amavi, amatus\" --conjugation 1 --processor html_output.json --out outfile.html',
+    'Example: ./inflector --verb \"amo, amare, amavi, amatus\" --conjugation 1 --translation "love, loved, loved" --processor \"./processors/html_verb_paradigm.js" --out outfile.html',
     '',
-    '--verb "<verb principle parts>"',
+    '--verb "<verb principal parts>"',
     '--conjugation <num>',
     '--deponent',
-    '--processor <processor.json>',
+    '--processor <processor.js>',
+    '--translation <values to use in processor>',
     '--out <outfile>',
     ''
 ].join("\n");
@@ -19,29 +21,39 @@ var argv = require('optimist')
     .usage(usage)
     .demand(['verb', 'conjugation'])
     .boolean('deponent')
-    .default('output-config', '')
+    .default('translation', null)
     .default('out', null)
     .default('processor', null)
     .describe('deponent', 'If specified, conjugates the verb as deponent')
-    .describe('processor', 'A JSON file that contains a function that takes one argument (an object containing all of the inflections')
+    .describe('translation', 'Translation(s), inflected and comma-separated. Can be freeform—used with processor output')
+    .describe('processor', 'A javascript file that contains a function which takes one argument (an object containing all of the inflections')
     .describe('out', 'If specified, write output to a file. If `-processor` is not specified, writes output as JSON')
     .argv;
-
-var util = require('util');
-var jsonfile = require('jsonfile');
 
 var inflections = {};
 
 // =====================================================================================================================
-// PRINCIPLE PARTS
+// PRINCIPAL PARTS
 // =====================================================================================================================
-var principleParts = argv.verb.split(',');
+var principalParts = argv.verb.split(',');
 
 // Trim any spaces
-for (var i = 0; i < principleParts.length; i++) {
-    principleParts[i] = principleParts[i].trim();
+principalParts.forEach(function(value, i) {
+    principalParts[i] = value.trim();
+});
+
+// =====================================================================================================================
+// TRANSLATION INFO
+// =====================================================================================================================
+if (argv.translation) {
+    var translationParts = argv.translation.split(',');
+
+    // Trim any spaces
+    translationParts.forEach(function (value, i) {
+        translationParts[i] = value.trim();
+    });
+    inflections.translation = translationParts;
 }
-//console.log(principleParts);
 
 // =====================================================================================================================
 // LOAD CONJUGATION INFO
@@ -51,13 +63,13 @@ var conjugation = jsonfile.readFileSync('./data/conjugation-'+argv.conjugation+'
 
 var conjugator = {
     endings: {
-        active: conjugation.voices.active.principle_parts,
-        passive: conjugation.voices.passive.principle_parts
+        active: conjugation.voices.active.principal_parts,
+        passive: conjugation.voices.passive.principal_parts
     },
     stems: {
-        infinitive: principleParts[1],
-        perfect: principleParts[2],
-        perf_pass_part: principleParts[3]
+        infinitive: principalParts[1],
+        perfect: principalParts[2],
+        perf_pass_part: principalParts[3]
     }
 };
 
@@ -70,9 +82,9 @@ var infStemRegex = new RegExp(conjugator.endings.active.present_infinitive + '$'
 var perfStemRegex = new RegExp(conjugator.endings.active.perfect_indicative + '$');
 var perfPassPartStemRegex = new RegExp(conjugator.endings.active.perfect_passive_participle + '$');
 
-var inf_stem = principleParts[1].replace(infStemRegex, '');
-var perf_stem = principleParts[2].replace(perfStemRegex, '');
-var perf_pass_part_stem = principleParts[3].replace(perfPassPartStemRegex, '');
+var inf_stem = principalParts[1].replace(infStemRegex, '');
+var perf_stem = principalParts[2].replace(perfStemRegex, '');
+var perf_pass_part_stem = principalParts[3].replace(perfPassPartStemRegex, '');
 
 for (var v in conjugation.voices) {
     inflections[v] = {};
@@ -174,6 +186,14 @@ if (argv.deponent) {
     inflections.passive = inflections.active;
     inflections.active = inflections.temp;
     delete inflections.temp;
+}
+
+if (argv.processor) {
+    var processor = require(argv.processor);
+
+    if (processor.process) {
+        processor.process(inflections);
+    }
 }
 
 console.log(util.inspect(inflections, {depth: 8}));

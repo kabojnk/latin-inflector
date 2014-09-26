@@ -1,7 +1,7 @@
 {
     "voices": {
         "active": {
-            "principle_parts": {
+            "principal_parts": {
                 "present_indicative": "ō",
                 "present_infinitive": "āre",
                 "perfect_indicative": "āvī",
@@ -95,7 +95,7 @@
             }
         },
         "passive": {
-            "principle_parts": {
+            "principal_parts": {
                 "present_indicative": "ōr",
                 "present_infinitive": "āri",
                 "perfect_indicative": "ātus sum"
