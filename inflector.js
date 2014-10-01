@@ -11,6 +11,7 @@ var usage = [
     '--verb "<verb principal parts>"',
     '--conjugation <num>',
     '--deponent',
+    '--defective',
     '--processor <processor.js>',
     '--translation <values to use in processor>',
     '--out <outfile>',
@@ -21,16 +22,40 @@ var argv = require('optimist')
     .usage(usage)
     .demand(['verb', 'conjugation'])
     .boolean('deponent')
+    .boolean('defective')
     .default('translation', null)
     .default('out', null)
     .default('processor', null)
     .describe('deponent', 'If specified, conjugates the verb as deponent')
+    .describe('defective', 'If specified, conjugates the verb as defective (only "perfect" tense)')
     .describe('translation', 'Translation(s), inflected and comma-separated. Can be freeform—used with processor output')
     .describe('processor', 'A javascript file that contains a function which takes one argument (an object containing all of the inflections')
     .describe('out', 'If specified, write output to a file. If `-processor` is not specified, writes output as JSON')
     .argv;
 
 var inflections = {};
+
+// =====================================================================================================================
+// METADATA TO BE ATTACHED
+// =====================================================================================================================
+
+inflections.meta = {};
+
+//
+// Translation Info
+//
+if (argv.translation) {
+    var translationParts = argv.translation.split(',');
+
+    // Trim any spaces
+    translationParts.forEach(function (value, i) {
+        translationParts[i] = value.trim();
+    });
+    inflections.meta.translation = translationParts;
+}
+
+inflections.meta.isDeponent = argv.deponent;
+inflections.meta.isDefective = argv.defective;
 
 // =====================================================================================================================
 // PRINCIPAL PARTS
@@ -45,15 +70,7 @@ principalParts.forEach(function(value, i) {
 // =====================================================================================================================
 // TRANSLATION INFO
 // =====================================================================================================================
-if (argv.translation) {
-    var translationParts = argv.translation.split(',');
 
-    // Trim any spaces
-    translationParts.forEach(function (value, i) {
-        translationParts[i] = value.trim();
-    });
-    inflections.translation = translationParts;
-}
 
 // =====================================================================================================================
 // LOAD CONJUGATION INFO
@@ -103,6 +120,11 @@ for (var v in conjugation.voices) {
                     if (mood.hasOwnProperty(t)) {
                         inflections[v][m][t] = { 'sg' : {}, 'pl': {}};
                         var tense = mood[t];
+                        if (argv.defective &&
+                            (t == 'present' || t == 'imperfect' || t == 'future')) {
+                            delete inflections[v][m][t];
+                            continue;
+                        }
                         if (tense.hasOwnProperty('sg')) {
                             for (var i = 0; i < tense.sg.length; i++) {
                                 inflections[v][m][t].sg[i] = inf_stem + tense.sg[i];
@@ -119,9 +141,12 @@ for (var v in conjugation.voices) {
             case 'imperative':
                 for (var t in mood) {
                     var tense = mood[t];
+                    if (argv.defective &&
+                        (t == 'present' || t == 'imperfect' || t == 'future')) {
+                        continue;
+                    }
                     inflections[v][m][t] = {};
                     for (var n in tense) {
-                        console.log(n);
                         inflections[v][m][t][n] = {};
                         var number = tense[n];
                         if (number.hasOwnProperty('sg')) {
@@ -195,5 +220,5 @@ if (argv.processor) {
         processor.process(inflections);
     }
 }
-
+//console.log("DONE");
 console.log(util.inspect(inflections, {depth: 8}));
