@@ -125,14 +125,31 @@ for (var v in conjugation.voices) {
                             delete inflections[v][m][t];
                             continue;
                         }
+                        var stem = '';
+                        switch (t) {
+                            case 'perfect':
+                            case 'pluperfect':
+                            case 'future_perfect':
+                                if (voice == 'active') {
+                                    stem = perf_stem;
+                                } else {
+                                    stem = perf_pass_part_stem;
+                                }
+                                break;
+                            case 'present':
+                            case 'future':
+                            case 'imperfect':
+                                stem = inf_stem;
+                                break;
+                        }
                         if (tense.hasOwnProperty('sg')) {
                             for (var i = 0; i < tense.sg.length; i++) {
-                                inflections[v][m][t].sg[i] = inf_stem + tense.sg[i];
+                                inflections[v][m][t].sg[i] = stem + tense.sg[i];
                             }
                         }
                         if (tense.hasOwnProperty('pl')) {
                             for (var i = 0; i < tense.pl.length; i++) {
-                                inflections[v][m][t].pl[i] = inf_stem + tense.pl[i]
+                                inflections[v][m][t].pl[i] = stem + tense.pl[i]
                             }
                         }
                     }
@@ -169,7 +186,16 @@ for (var v in conjugation.voices) {
     if (voice.hasOwnProperty('infinitive')) {
         inflections[v].infinitive = {};
         for (var t in voice.infinitive) {
-            inflections[v].infinitive[t] = inf_stem + voice.infinitive[t];
+            switch (t) {
+                case 'perfect':
+                case 'future':
+                    inflections[v].infinitive[t] = perf_pass_part_stem + voice.infinitive[t];
+                    break;
+                default:
+                    inflections[v].infinitive[t] = inf_stem + voice.infinitive[t];
+                    break;
+
+            }
         }
     }
 
@@ -179,7 +205,7 @@ for (var v in conjugation.voices) {
     if (voice.hasOwnProperty('participle')) {
         inflections[v].participle = {};
         for (var t in voice.participle) {
-            inflections[v].participle[t] = inf_stem + voice.participle[t];
+            inflections[v].participle[t] = perf_pass_part_stem + voice.participle[t];
         }
     }
 

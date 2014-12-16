@@ -5,14 +5,16 @@ it may become relevant to others’ personal projects and may become useful.
 
 # What It Can Do
 
-Best to just check the commits for the most up-to-date info. As of right now, all that this utility can do is conjugate 
-1st conjugation, active voice verbs.  The output is JSON.
+Best to just check the commits for the most up-to-date info.  Right now, this tool can:
+
+* Inflect all verb regular conjugations (including 3rd conjugation —iō, defective, and deponent verbs)
+* Provide JSON output for said inflections
 
 # Roadmap
 
 Ideally, this utility will grow to the point where it can do the following:
 
-* Conjugate all verbs based on conjugation rules specified in JSON.
+* Conjugat irregular verbs
 * Inflect other Latin words (in order of priority: nouns, adjectives and adverbs)
 * Provide formatted output of the inflections via a format config file (most likely a .json file with various options).
  

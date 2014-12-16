@@ -107,11 +107,11 @@
                         "pl": ["imur", "iminī", "untur"]
                     },
                     "imperfect": {
-                        "sg": ["ēbar", "{ēbāris|ēbāre}", "ābatur"],
+                        "sg": ["ēbar", "{ēbāris|ēbāre}", "ēbatur"],
                         "pl": ["ēbāmur", "ēbāmini", "ēbantur"]
                     },
                     "future": {
-                        "sg": ["ar", "{ēris|ēre}", "ēbitur"],
+                        "sg": ["ar", "{ēris|ēre}", "ētur"],
                         "pl": ["ēmur", "ēminī", "entur"]
                     },
                     "perfect": {
@@ -171,7 +171,7 @@
             },
             "participle": {
                 "present": "us",
-                "future": "undus"
+                "gerundive": "undus"
             }
         }
     }
